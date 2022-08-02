@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<script type="module">
+		import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
+		kaboom({
+			background: [0, 0, 0]
+		});
+		loadSprite("grass", "assets/img/grass_block.png");
+		loadSprite("player", "assets/img/player.png");
+		loadSprite("coin", "assets/img/money.png");
+		scene("main", ({coins} = {coins: 0}) => {
+			gravity(5000);
+			const MOVE_SPEED = 480;
+			const FALL_DEATH = 2400;
+			const JUMP_FORCE = 1320;
+			const player=add([
+				sprite("player"), pos(50, 40),
+				area(),
+				scale(1),
+				body()
+			])
+			add([
+				sprite("grass"), pos(50, 117), solid(), area()
+			])
+			add([
+				sprite("grass"), pos(230, 117), solid(), area()
+			])
+			add([
+				sprite("grass"), pos(400, 150), solid(), area()
+			])
+			add([
+				sprite("grass"), pos(530, 117), solid(), area()
+			])
+			add([
+				sprite("grass"), pos(900, 140), solid(), area()
+			])
+			const coin=add([
+				sprite("coin"), pos(530, 55), area(), "coin"
+			])
+			player.onUpdate(() => {
+				camPos(player.pos)
+				if(player.pos.y >= FALL_DEATH) {
+					destroy(player)
+					go("lose")
+				}
+			})
+			onKeyPress("x", () =>{
+				go("win")
+			})
+			onKeyPress("space", () => {
+				if (player.isGrounded())(
+					player.jump(JUMP_FORCE)
+				)
+			})
+			onKeyDown("d", () => {
+				player.move(MOVE_SPEED, 0)
+			})
+			onKeyDown("a", () => {
+				player.move(-MOVE_SPEED, 0)
+			})
+			player.onCollide("coin", (coin) => {
+				destroy(coin),
+				coins += 1,
+				console.log("coins added.");
+				if (coins == 1) {
+					coinstext.text = coins + " Coin";
+				} else {
+					coinstext.text = coins + " Coins";
+				}
+				addKaboom(coin.pos)
+			})
+			const coinstext=add([
+				text(coins + " Coins"),
+				pos(24, 24),
+				fixed()
+			])
+		})
+		scene("win", () => {
+			const win=add([
+				text("Du hast gewonnen! Drücke die Taste \"f\" um das Spiel neuzustarten"), scale(0.5)
+			])
+			onKeyPress("f", () => {
+				go("main")
+			})
+		})
+		scene("lose", () => {
+			add([
+				text("Du hast verloren!")
+			])
+			onKeyPress("f", () => {
+					go("main")
+			})
+		})
+		go("main")
+	</script>
+</body>
+</html>
