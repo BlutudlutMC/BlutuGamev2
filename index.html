@@ -16,6 +16,7 @@
 		loadSprite("player", "assets/img/player.png");
 		loadSprite("coin", "assets/img/money.png");
 		loadSprite("spikes", "assets/img/spikes.png");
+		loadSprite("portal", "assets/img/portal.png")
 		scene("main", ({coins} = {coins: 0}) => {
 			gravity(5000);
 			const MOVE_SPEED = 480;
@@ -52,7 +53,43 @@
 				sprite("coin"), pos(900, 50), area(), "coin"
 			])
 			add([
-				sprite("grass"), pos(1300, 140), solid(), area()
+				sprite("grass"), pos(1200, 60), solid(), area()
+			])
+			add([
+				sprite("grass"), pos(1490, 140), solid(), area()
+			])
+			add([
+				sprite("grass"), pos(1800, 100), solid(), area()
+			])
+			add([
+				sprite("grass"), pos(2100, 50), solid(), area()
+			])
+			add([
+				sprite("grass"), pos(2400, 75), solid(), area()
+			])
+			add([
+				sprite("grass"), pos(2700, 45), solid(), area()
+			])
+			add([
+				sprite("grass"), pos(2850, 45), solid(), area()
+			])
+			add([
+				sprite("spikes"), pos(2850, -20), area(), "spike"
+			])
+			add([
+				sprite("grass"), pos(2900, 45), solid(), area()
+			])
+			add([
+				sprite("coin"), pos(), area(), "coin"
+			])
+			add([
+				sprite("grass"), pos(3200, 50), solid(), area()
+			])
+			add([
+				sprite("grass"), pos(3264, 50), solid(), area()
+			])
+			add([
+				sprite("portal"), pos(3264, -10), area(), "portal"
 			])
 			player.onUpdate(() => {
 				camPos(player.pos)
@@ -88,6 +125,9 @@
 			})
 			player.onCollide("spike", (spikes) => {
 				go("main")
+			})
+			player.onCollide("portal", (portal) => {
+				go("win")
 			})
 			const coinstext=add([
 				text(coins + " Coins"),
