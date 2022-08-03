@@ -151,7 +151,17 @@
 					go("main")
 			})
 		})
-		go("main")
+		scene("home", () => {
+			add([
+				text("Connecting to server...")
+			])
+		})
+		setTimeout(loaded, 1234);
+		function loaded() {
+			go("main")
+		}
+		go("home")
+
 	</script>
 </body>
 </html>
