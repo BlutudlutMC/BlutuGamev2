@@ -51,6 +51,9 @@
 			add([
 				sprite("coin"), pos(900, 50), area(), "coin"
 			])
+			add([
+				sprite("grass"), pos(1300, 140), solid(), area()
+			])
 			player.onUpdate(() => {
 				camPos(player.pos)
 				if(player.pos.y >= FALL_DEATH) {
