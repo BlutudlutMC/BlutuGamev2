@@ -15,6 +15,7 @@
 		loadSprite("grass", "assets/img/grass_block.png");
 		loadSprite("player", "assets/img/player.png");
 		loadSprite("coin", "assets/img/money.png");
+		loadSprite("spikes", "assets/img/spikes.png");
 		scene("main", ({coins} = {coins: 0}) => {
 			gravity(5000);
 			const MOVE_SPEED = 480;
@@ -36,6 +37,9 @@
 				sprite("grass"), pos(400, 150), solid(), area()
 			])
 			add([
+				sprite("spikes"), pos(400, 90), solid(), area(), "spike"
+			])
+			add([
 				sprite("grass"), pos(530, 117), solid(), area()
 			])
 			add([
@@ -43,6 +47,9 @@
 			])
 			const coin=add([
 				sprite("coin"), pos(530, 55), area(), "coin"
+			])
+			add([
+				sprite("coin"), pos(900, 50), area(), "coin"
 			])
 			player.onUpdate(() => {
 				camPos(player.pos)
@@ -75,6 +82,9 @@
 					coinstext.text = coins + " Coins";
 				}
 				addKaboom(coin.pos)
+			})
+			player.onCollide("spike", (spikes) => {
+				go("main")
 			})
 			const coinstext=add([
 				text(coins + " Coins"),
