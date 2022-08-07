@@ -1,167 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlutuGame - Launcher</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.light_blue-cyan.min.css" /> 
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </head>
-<body>
-	<script type="module">
-		import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
-		kaboom({
-			background: [0, 0, 0]
-		});
-		loadSprite("grass", "assets/img/grass_block.png");
-		loadSprite("player", "assets/img/player.png");
-		loadSprite("coin", "assets/img/money.png");
-		loadSprite("spikes", "assets/img/spikes.png");
-		loadSprite("portal", "assets/img/portal.png")
-		scene("main", ({coins} = {coins: 0}) => {
-			gravity(5000);
-			const MOVE_SPEED = 480;
-			const FALL_DEATH = 2400;
-			const JUMP_FORCE = 1320;
-			const player=add([
-				sprite("player"), pos(50, 40),
-				area(),
-				scale(1),
-				body()
-			])
-			add([
-				sprite("grass"), pos(50, 117), solid(), area()
-			])
-			add([
-				sprite("grass"), pos(230, 117), solid(), area()
-			])
-			add([
-				sprite("grass"), pos(400, 150), solid(), area()
-			])
-			add([
-				sprite("spikes"), pos(400, 90), solid(), area(), "spike"
-			])
-			add([
-				sprite("grass"), pos(530, 117), solid(), area()
-			])
-			add([
-				sprite("grass"), pos(900, 140), solid(), area()
-			])
-			const coin=add([
-				sprite("coin"), pos(530, 55), area(), "coin"
-			])
-			add([
-				sprite("coin"), pos(900, 50), area(), "coin"
-			])
-			add([
-				sprite("grass"), pos(1200, 60), solid(), area()
-			])
-			add([
-				sprite("grass"), pos(1490, 140), solid(), area()
-			])
-			add([
-				sprite("grass"), pos(1800, 100), solid(), area()
-			])
-			add([
-				sprite("grass"), pos(2100, 50), solid(), area()
-			])
-			add([
-				sprite("grass"), pos(2400, 75), solid(), area()
-			])
-			add([
-				sprite("grass"), pos(2700, 45), solid(), area()
-			])
-			add([
-				sprite("grass"), pos(2850, 45), solid(), area()
-			])
-			add([
-				sprite("spikes"), pos(2850, -20), area(), "spike"
-			])
-			add([
-				sprite("grass"), pos(2900, 45), solid(), area()
-			])
-			add([
-				sprite("coin"), pos(), area(), "coin"
-			])
-			add([
-				sprite("grass"), pos(3200, 50), solid(), area()
-			])
-			add([
-				sprite("grass"), pos(3264, 50), solid(), area()
-			])
-			add([
-				sprite("portal"), pos(3264, -10), area(), "portal"
-			])
-			player.onUpdate(() => {
-				camPos(player.pos)
-				if(player.pos.y >= FALL_DEATH) {
-					destroy(player)
-					go("lose")
-				}
-			})
-			onKeyPress("x", () =>{
-				go("win")
-			})
-			onKeyPress("space", () => {
-				if (player.isGrounded())(
-					player.jump(JUMP_FORCE)
-				)
-			})
-			onKeyDown("d", () => {
-				player.move(MOVE_SPEED, 0)
-			})
-			onKeyDown("a", () => {
-				player.move(-MOVE_SPEED, 0)
-			})
-			player.onCollide("coin", (coin) => {
-				destroy(coin),
-				coins += 1,
-				console.log("coins added.");
-				if (coins == 1) {
-					coinstext.text = coins + " Coin";
-				} else {
-					coinstext.text = coins + " Coins";
-				}
-				addKaboom(coin.pos)
-			})
-			player.onCollide("spike", (spikes) => {
-				go("main")
-			})
-			player.onCollide("portal", (portal) => {
-				go("win")
-			})
-			const coinstext=add([
-				text(coins + " Coins"),
-				pos(24, 24),
-				fixed()
-			])
-		})
-		scene("win", () => {
-			const win=add([
-				text("Du hast gewonnen! Drücke die Taste \"f\" um das Spiel neuzustarten. Second level coming soon"), scale(0.5)
-			])
-			onKeyPress("f", () => {
-				go("main")
-			})
-		})
-		scene("lose", () => {
-			add([
-				text("Du hast verloren!")
-			])
-			onKeyPress("f", () => {
-					go("main")
-			})
-		})
-		scene("home", () => {
-			add([
-				text("Connecting to server...")
-			])
-		})
-		setTimeout(loaded, 1234);
-		function loaded() {
-			go("main")
-		}
-		go("home")
+<body>	
+    <!-- Wide card with share menu button -->
+    <style>
+        .demo-card-square.mdl-card {
+        width: 100%;
+        height: 300px;
+        }
+        .demo-card-square > .mdl-card__title {
+        color: #fff;
+        background:
+            url('https://getmdl.io/assets/demos/welcome_card.jpg') bottom right 15% no-repeat #46B6AC;
+        }
+    </style>
+    <style>
+        .demo-layout-transparent {
+          background: url('./bg.png') center / cover;
+        }
+        .demo-layout-transparent .mdl-layout__header,
+        .demo-layout-transparent .mdl-layout__drawer-button {
+          color: white;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: red;
+            color: white;
+            text-align: center;
+        }
+        </style>
+        
+        <div class="demo-layout-transparent mdl-layout mdl-js-layout">
+          <header class="mdl-layout__header mdl-layout__header--transparent">
+            <div class="mdl-layout__header-row">
+              <!-- Title -->
+              <span class="mdl-layout-title">BlutuGame</span>
+              <!-- Add spacer, to align navigation to the right -->
+              <div class="mdl-layout-spacer"></div>
+              <!-- Navigation -->
+              <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+              </nav>
+            </div>
+          </header>
+          <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">BlutuGame</span>
+            <nav class="mdl-navigation">
+              <a class="mdl-navigation__link" href="/intro">Play <b>BlutuGame</b>!</a>
+              <a class="mdl-navigation__link" href="/website/galery">Picture Galery</a>
+              <a class="mdl-navigation__link" href="/stats">Game Stats</a>
+              <a class="mdl-navigation__link" target="_blank" href="https://github.com/blutudlutmc/blutugamev2">GitHub</a>
+            </nav>
+          </div>
+          <main style="text-align:center;" class="mdl-layout__content mdl-color-text--white">
+            <div id="/">
+                <button class="mdl-button--raised mdl-button mdl-js-button mdl-js-ripple-effect mdl-color--blue-200" id="p3" onclick="download(); window.location.href='#/download'">Free Download (Windows)</button><br>
+                <p>or</p>
+                <button class="mdl-button--raised mdl-button mdl-js-button mdl-js-ripple-effect mdl-color--green-300" id="p1" onclick="play(); window.location.href='/intro'">Play</button>
+                <p>don't know how to control?</p>
+                <button class="mdl-button--rasied mdl-button mdl-js-button mdl-js-ripple-effect mdl-color--yellow-400 " id="p4" onclick="controls();">How to play?</button>
+                <p>Want<span class="mdl-color-text--black"> a interactive De</span>mo?</p>
+                <button class="mdl-button--rasied mdl-button mdl-js-button mdl-js-ripple-effect mdl-color--blue" id="p7" onclick="demo();">Demo</button>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <div id="p5" class="demo-card-square mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-card--expand">
+                      <h2 class="mdl-card__title-text">How to play</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <h4>You can move your character by pressing A and D. If you press A you can run to the left side, if you press D you can run to the right side. You can jump by pressing the SPACE key. If you win/lost you can press the key R to reset your character.</h4>
+                    </div>
+                    <div style="align-self: center; text-align: center;" class="mdl-card__actions mdl-card--border">
+                      <a onclick="closehowtoplay();" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                        Close
+                      </a>
+                    </div>
+                  </div>
+                
+                <div id="p2" style="width: 100%" class="mdl-color-text--white mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </div>
+            <div id="/demo">
+                <h3><b>The demo server is currently in maintenance. Please download or open the game on the official page. You can find the links on the <a href="/#/">top</a></b></h3>
+                <a href="#/" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-color--white" style="float: right; right: 15px;"><i class="material-icons">home</i></a>
+            </div>
+          </main>
+        </div> 
+    <style>
 
-	</script>
+    </style>
+    <script>
+        document.getElementById("p5").style.display="none";
+        const playloader = document.getElementById("p2");
+        playloader.style.display="none";
+        function play() {
+            const playbtn = document.getElementById("p1");
+            const playloader = document.getElementById("p2");
+            playloader.style.display="block";
+            playbtn.setAttribute("disabled", "");
+            playbtn.innerHTML = "Starting..."
+        }
+        function download() {
+            const downloadbtn = document.getElementById("p3");
+            downloadbtn.setAttribute("disabled", "");
+            downloadbtn.innerHTML = "Downloading...";
+        }
+        function controls() {
+            const howtoplaybtn = document.getElementById("p4");
+            const controls = document.getElementById("p5");
+            controls.style.display="block";
+        }
+        function closehowtoplay() {
+            const control2 = document.getElementById("p5");
+            control2.style.display="none";
+        }
+        function demo() {
+            window.location.href="#/demo";
+        }
+    </script>
+    <script>
+      function disable() {
+        document.body.classList.add("stop-scrolling");
+      }
+      disable();
+      
+
+
+    </script>       
 </body>
 </html>
